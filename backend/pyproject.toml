@@ -2,7 +2,7 @@
 name = "fossil-scribe"
 version = "0.1.0"
 description = ""
-authors = ["Sol-Raksha Raja <raj@cambridgespark.com>"]
+authors = ["Sol-Raksha Raja <solraksha@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
