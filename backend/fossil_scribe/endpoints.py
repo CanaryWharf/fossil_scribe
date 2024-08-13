@@ -1,5 +1,7 @@
 from typing import Literal, Dict
+import os
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 from openai import OpenAI
 from fossil_scribe.models import LetterGenRequest
 
@@ -26,10 +28,6 @@ CONCERNS = [
     {'key': 'carbon', 'name': 'Carbon released'},
 ]
 
-
-@app.get('/')
-def home():
-    return {'msg': 'Hello World!'}
 
 @app.get('/api/causes')
 def get_causes():
@@ -60,8 +58,10 @@ def generate_letter(data: LetterGenRequest) -> Dict[str, str]:
             {"role": "user", "content": "Write the only the email body to your mp arguing against the expansion"},
         ]
     )
-    print('STARTING SESSION')
-    print(response)
     return {
         'msg': response.choices[0].message.content,
     }
+
+folder = os.path.dirname(__file__)
+
+app.mount("/", StaticFiles(directory=os.path.join(folder, "dist"), html=True), name="static")
