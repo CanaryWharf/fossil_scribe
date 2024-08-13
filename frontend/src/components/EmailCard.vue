@@ -1,10 +1,9 @@
 <script setup>
 import { ref } from 'vue';
 import axios from 'axios';
-import { io } from "socket.io-client"
 import { marked } from 'marked';
 
-const ready = ref(true);
+const ready = ref(false);
 
 const currentMessage = ref('')
 
@@ -15,24 +14,19 @@ const props = defineProps({
   name:  String,
 })
 
-const socket = io("/socket")
-
-socket.on("connect", () => {
-  console.log("we in");
-})
-socket.on("token", (msg) => {
-  console.log(msg);
-  currentMessage.value = marked(msg)
-});
-
 function startEmail() {
-  socket.emit("message", JSON.stringify({
-    concerns: props.concerns,
-    cause: props.cause,
-    mp: props.mp,
-    name: props.name,
-  }));
+  const { concerns, cause, mp, name } = props;
+  axios.post('/api/message-gen', {
+    concerns,
+    cause,
+    mp,
+    name,
+  }).then((res) => {
+    currentMessage.value = res.data.msg;
+    ready.value = true;
+  });
 }
+startEmail();
 
 </script>
 
@@ -51,6 +45,6 @@ function startEmail() {
       <div class="message-body" v-html="currentMessage">
       </div>
     </div>
-    <button class="button" @click="startEmail">Send Mail</button>
+    <!-- <button class="button" @click="startEmail">Send Mail</button> -->
   </div>
 </template>

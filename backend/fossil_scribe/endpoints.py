@@ -20,6 +20,12 @@ CAUSES = [
     {'name': 'airport', 'title': 'City Airport Expansion'},
 ]
 
+CONCERNS = [
+    {'key': 'health', 'name': 'Health issues with fumes'},
+    {'key': 'noise', 'name': 'Noise Pollution'},
+    {'key': 'carbon', 'name': 'Carbon released'},
+]
+
 
 @app.get('/')
 def home():
@@ -34,7 +40,7 @@ def get_causes():
 @app.get('/api/causes/{cause}/concerns')
 def get_concerns_for_cause(cause: Literal['airport']):
     return {
-        'concerns': ['health', 'noise', 'carbon'],
+        'concerns': CONCERNS,
     }
 
 @app.get('/api/areas/<string:area>/mp')

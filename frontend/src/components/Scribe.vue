@@ -1,16 +1,17 @@
 <script setup>
 import { ref } from 'vue';
 import CauseCard from './CauseCard.vue';
+import ConcernCard from './ConcernCard.vue';
 import EmailCard from './EmailCard.vue';
 
-const allPages = ref(['Causes', 'Find your MP', 'Concerns', 'Send email'])
+const allPages = ref(['Causes', 'Concerns', 'Send email'])
 
-// const currentPage = ref('Causes');
-const currentPage = ref('Send email');
+const currentPage = ref(0);
+// const currentPage = ref('Send email');
 
-const chosenCause = ref(null);
+const currentCause = ref(null);
 
-const chosenConcerns = ref([]);
+const currentConcerns = ref([]);
 
 const mpName = ref('');
 
@@ -19,14 +20,20 @@ function updatePage(newPage) {
   currentPage.value = newPage;
 }
 function nextPage() {
+  if (currentPage.value < allPages.value.length) {
+   currentPage.value += 1
+  }
 }
 
 function updatecurrentCause(newCause) {
+  console.log("Updating cause")
   currentCause.value = newCause;
+  nextPage();
 }
 
 function updateConcerns(newConcerns) {
-  chosenConcerns.value = newConcerns;
+  currentConcerns.value = newConcerns;
+  nextPage();
 }
 
 function updateMP(newMP) {
@@ -47,17 +54,24 @@ function updateMP(newMP) {
     <article class="panel is-primary">
       <p class="panel-heading">Primary</p>
       <p class="panel-tabs">
-      <a v-for="page in allPages" :class="{'is-active' : page === currentPage}">{{page}}</a>
+      <a 
+        v-for="page, i in allPages"
+        @click="() => updatePage(i)"
+        :class="{'is-active' : i === currentPage}"
+        >{{page}}</a>
       </p>
-      <div v-if="currentPage === 'Causes'">
+      <div v-if="currentPage === 0">
         <CauseCard @cause="updatecurrentCause" />
       </div>
-      <div v-if="currentPage === 'Send email'">
+      <div v-if="currentPage === 1">
+        <ConcernCard :cause="currentCause" @concern="updateConcerns" />
+      </div>
+      <div v-if="currentPage === 2">
         <EmailCard 
-           :concerns="['health']"
-           cause="airport"
+           :concerns="currentConcerns"
+           :cause="currentCause"
            mp="Jezza"
-           name="Root"
+           name="Ya Boi"
         />
       </div>
     </article>

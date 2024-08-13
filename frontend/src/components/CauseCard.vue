@@ -6,13 +6,9 @@ const allCauses = ref([])
 const ready = ref(false);
 
 axios.get('/api/causes').then((res) => {
-  console.log("GOT", res);
   allCauses.value = res.data.causes;
   ready.value = true;
 });
-
-function emitChosen(cause) {
-}
 
 </script>
 
