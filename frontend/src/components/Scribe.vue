@@ -7,7 +7,6 @@ import EmailCard from './EmailCard.vue';
 const allPages = ref(['Causes', 'Concerns', 'Send email'])
 
 const currentPage = ref(0);
-// const currentPage = ref('Send email');
 
 const currentCause = ref(null);
 

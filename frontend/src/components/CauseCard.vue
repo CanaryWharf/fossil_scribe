@@ -26,14 +26,14 @@ axios.get('/api/causes').then((res) => {
   <div v-else>
     <div
       class="card cause-card clickable"
-      @click="$emit('cause', cause.name)"
+      @click="$emit('cause', cause.key)"
       v-for="cause in allCauses">
       <header class="card-header">
-        <p class="card-header-title">{{ cause.title }}</p>
+        <p class="card-header-title">{{ cause.name }}</p>
       </header>
       <div class="card-image">
         <figure class="image is-4by3">
-          <img src="../assets/plane.png">
+          <img :src="`../assets/${cause.key}.png`">
         </figure>
       </div>
     </div>
