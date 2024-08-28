@@ -1,3 +1,29 @@
-key: santa_delivery
-name: "Eco-cide from Santa's toys"
-enabled: false
+key: santa_toys
+name: "North Pole toy production Eco-cide"
+description: "Production and distribution of toys is a huge contributor to the climate catastrophe. Claus and his factory must be held accountable for his part in the on-going eco-cide of our planet."
+recipients:
+  - name: Santa Clause
+    email: jkroota+clause@gmail.com
+concerns:
+  - key: coal_mine
+    name: "Yuletide Coal Mine"
+    description: "Santa Claus operates one of the largest coal mines on the planet in order to distribute it to naughty children"
+    prompt: |
+      Santa Claus operates the Yuletide Coal Mine, one of the largest coal extraction facilities on the planet, making him a significant contributor to traditional fossil fuel production. Far from the cheerful image of holiday festivities, the Yuletide Coal Mine is a massive, year-round operation that extracts enormous quantities of coal to be delivered to naughty children each Christmas. This sprawling Arctic mine is well-known, with its towering machinery and extensive excavation sites clearly visible.
+
+      The environmental impact of the Yuletide Coal Mine is severe. The once-pristine Arctic landscape is now heavily polluted, with thick clouds of smoke rising from the mine, darkening the snow and contributing to the rapid melting of ice caps. Santa’s role in running this facility places him among the top contributors to global carbon emissions, turning what was once a simple holiday tradition into a major factor in the ongoing climate crisis.
+  - key: plastic
+    name: "Plastic usage in toys"
+    description: "Large portions of Santa's toys are made from non-recyclable plastic, and is a major contributor to environmental degredation"
+    prompt: |
+      Santa Claus’s workshop, while filled with holiday cheer, relies heavily on plastic for its toys, creating a significant environmental issue. The vast majority of toys produced—ranging from action figures to dolls—are made from non-recyclable plastics, contributing to overflowing landfills and long-term pollution. This plastic dependency results in high carbon emissions and environmental degradation, underscoring the urgent need for more sustainable practices in toy production to address the growing ecological impact of Santa’s operations.
+  - key: delivery_emissions
+    name: "Sleigh Emissions"
+    description: "Santa's sleigh is one of the biggest producers of carbon emissions on the plane.t The energy required to compress the space-time continuum to deliver all the presents in a single night exceeds the total energy consumption of Europe for a month"
+    prompt: |
+      Santa Claus’s ability to deliver presents worldwide in a single night involves bending the space-time continuum, a feat that demands an enormous amount of energy. This extraordinary manipulation of space and time requires a staggering amount of power, far beyond conventional energy sources. The process of altering the fabric of space-time to compress hours of travel into one night results in substantial energy consumption, with corresponding high levels of carbon emissions. While the idea of warping space-time is steeped in holiday magic, the reality of such immense energy requirements contributes significantly to global climate change. This highlights the paradox of Santa’s magical efficiency, emphasizing the need for sustainable energy solutions to mitigate the environmental impact of his extraordinary gift delivery operation.
+  - key: animal_disruption
+    name: "Disruption to native wildlife"
+    description: "Santa's operations in the North Pole disrupts local wildlife, many of whom are now endangered due to the ever-increasing demand for christmas presents"
+    prompt: |
+      Santa Claus’s North Pole operations significantly disrupts the Arctic environment, threatening several endangered species. The continous expansion of the workshop encroach on critical habitats, impacting polar bears, whose sea ice hunting grounds are compromised; Arctic foxes, which face habitat loss and reduced prey; narwhals, disturbed by increased noise and pollution; snowy owls, which struggle with habitat degradation; and Svalbard reindeer, affected by fragmented grazing areas. These disruptions highlight the urgent need for sustainable practices to protect these vulnerable species and preserve their critical habitats.

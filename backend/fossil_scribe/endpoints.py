@@ -13,40 +13,53 @@ client = OpenAI()
 scribe = ActionHandler()
 
 
-@app.get('/api/causes')
+@app.get("/api/causes")
 def get_causes():
-    refined_actions = [{'key': x['key'], 'name': x['name']} for x in scribe.actions.values()]
+    refined_actions = [
+        {"key": x["key"], "name": x["name"], "description": x.get("description")} for x in scribe.actions.values()
+    ]
     return {
-        'causes': refined_actions,
+        "causes": refined_actions,
     }
 
-@app.get('/api/causes/{cause}/concerns')
+
+@app.get("/api/causes/{cause}/concerns")
 def get_concerns_for_cause(cause: str):
     concerns = scribe.get_concerns(cause)
-    refined_concerns = [{'key': x['key'], 'name': x['name'], 'description': x['description']} for x in concerns]
+    refined_concerns = [{"key": x["key"], "name": x["name"], "description": x["description"]} for x in concerns]
     return {
-        'concerns': refined_concerns,
+        "concerns": refined_concerns,
     }
 
-@app.get('/api/areas/<string:area>/mp')
+
+@app.get("/api/areas/<string:area>/mp")
 def get_mp_for_area(area: str):
-    return {'mp': 'Beary Bearington'}
+    return {"mp": "Beary Bearington"}
 
 
-@app.post('/api/message-gen')
-def generate_letter(data: LetterGenRequest) -> Dict[str, str]:
+@app.post("/api/message-gen")
+def generate_letter(data: LetterGenRequest) -> dict:
     final_prompt = scribe.get_prompt(data.cause, data.concerns)
+    recipients_string = ", ".join([x['name'] for x in scribe.get_recipients(data.cause)])
     response = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
-            {"role": "system", "content": "You are a scribe to write emails to mps. Your MP is currently Christopher Kringle. Here is some background about the current cause"},
+            {
+                "role": "system",
+                "content": f"You are a scribe to write emails. Your recipients are {recipients_string}. Address them by their full name. You Here is some background about the current cause",
+            },
             {"role": "system", "content": final_prompt},
-            {"role": "user", "content": "Write the only the email body to your mp arguing against the expansion"},
-        ]
+            {
+                "role": "user",
+                "content": "Write only the email body regarding your concerns. Don't sign off with yours sincerely or anything similar. Write just the body.",
+            },
+        ],
     )
     return {
-        'msg': response.choices[0].message.content,
+        "msg": response.choices[0].message.content,
+        "recipients": scribe.get_recipients(data.cause),
     }
+
 
 folder = os.path.dirname(__file__)
 

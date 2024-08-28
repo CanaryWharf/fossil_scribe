@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import axios from 'axios';
+import Cause from './Cause.vue';
 
 const allCauses = ref([])
 const ready = ref(false);
@@ -13,10 +14,6 @@ axios.get('/api/causes').then((res) => {
 </script>
 
 <style scoped>
-.cause-card {
-  width: 20em;
-  margin: 1em;
-}
 </style>
 
 <template>
@@ -24,18 +21,13 @@ axios.get('/api/causes').then((res) => {
     Loading...
   </div>
   <div v-else>
-    <div
+    <Cause
       class="card cause-card clickable"
       @click="$emit('cause', cause.key)"
+      :name="cause.name"
+      :cause-key="cause.key"
+      :description="cause.description"
       v-for="cause in allCauses">
-      <header class="card-header">
-        <p class="card-header-title">{{ cause.name }}</p>
-      </header>
-      <div class="card-image">
-        <figure class="image is-4by3">
-          <img :src="`../assets/${cause.key}.png`">
-        </figure>
-      </div>
-    </div>
+    </Cause>
   </div>
 </template>

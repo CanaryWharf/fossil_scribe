@@ -1,5 +1,9 @@
 key: santa_workshop
-name: "Labour Rights in Santa's Workshop"
+name: "Santa's Workshop Labour Rights"
+description: "Labour rights for elven workers is in a dire state. What the North Pole is doing is akin to modern slavery and has no place in modern society."
+recipients:
+  - name: Santa Clause
+    email: jkroota+clause@gmail.com
 concerns:
   - key: no_holiday
     name: "Lack of Holidays"

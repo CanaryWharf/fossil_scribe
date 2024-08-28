@@ -23,6 +23,9 @@ class ActionHandler:
     def __init__(self):
         self.actions = self.get_all_actions()
 
+    def get_recipients(self, cause: str) -> List[Dict[str, str]]:
+        return self.actions[cause]['recipients']
+
     def get_concerns(self, cause: str) -> List[Dict[str, str]]:
         return self.actions[cause].get('concerns', [])
 

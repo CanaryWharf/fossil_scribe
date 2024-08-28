@@ -7,6 +7,7 @@ const props = defineProps({
 })
 
 const allConcerns = ref([])
+const selectedConcerns = ref([]);
 const ready = ref(false);
 
 axios.get(`/api/causes/${props.cause}/concerns`).then((res) => {
@@ -14,13 +15,18 @@ axios.get(`/api/causes/${props.cause}/concerns`).then((res) => {
   ready.value = true;
 });
 
+function selectConcern(concern) {
+  const index = selectedConcerns.value.indexOf(concern);
+  if (index < 0) {
+    selectedConcerns.value.push(concern)
+  } else {
+    selectedConcerns.value.splice(index, 1);
+  }
+}
+
 </script>
 
 <style scoped>
-.concern-card {
-  width: 20em;
-  margin: 1em;
-}
 </style>
 
 <template>
@@ -28,13 +34,16 @@ axios.get(`/api/causes/${props.cause}/concerns`).then((res) => {
     Loading...
   </div>
   <div v-else>
+    <h3>Select up to 3 concerns</h3>
+    {{ selectedConcerns }}
     <div
       class="card concern-card clickable"
-      @click="$emit('concern', [concern.key])"
+      @click="selectConcern(concern.key)"
       v-for="concern in allConcerns">
       <header class="card-header">
         <p class="card-header-title">{{ concern.name }}</p>
       </header>
     </div>
+    <button class="button" @click="$emit('concern', selectedConcerns)">Submit</button>
   </div>
 </template>

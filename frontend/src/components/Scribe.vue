@@ -12,8 +12,12 @@ const currentCause = ref(null);
 
 const currentConcerns = ref([]);
 
-const mpName = ref('');
 
+function reset() {
+  currentPage.value = 0;
+  currentCause.value = null;
+  currentConcerns.value = []
+}
 
 function updatePage(newPage) {
   currentPage.value = newPage;
@@ -35,10 +39,6 @@ function updateConcerns(newConcerns) {
   nextPage();
 }
 
-function updateMP(newMP) {
-  mpName.value = newMP;
-}
-
 </script>
 
 <template>
@@ -50,30 +50,20 @@ function updateMP(newMP) {
     </div>
   </section>
   <section class="section">
-    <article class="panel is-primary">
-      <p class="panel-heading">Primary</p>
-      <p class="panel-tabs">
-      <a 
-        v-for="page, i in allPages"
-        @click="() => updatePage(i)"
-        :class="{'is-active' : i === currentPage}"
-        >{{page}}</a>
-      </p>
-      <div v-if="currentPage === 0">
-        <CauseCard @cause="updatecurrentCause" />
-      </div>
-      <div v-if="currentPage === 1">
-        <ConcernCard :cause="currentCause" @concern="updateConcerns" />
-      </div>
-      <div v-if="currentPage === 2">
-        <EmailCard 
-           :concerns="currentConcerns"
-           :cause="currentCause"
-           mp="Jezza"
-           name="Ya Boi"
-        />
-      </div>
-    </article>
+    <button class="button" @click="reset">Reset</button>
+    <div v-if="currentPage === 0">
+      <CauseCard @cause="updatecurrentCause" />
+    </div>
+    <div v-if="currentPage === 1">
+      <ConcernCard :cause="currentCause" @concern="updateConcerns" />
+    </div>
+    <div v-if="currentPage === 2">
+      <EmailCard 
+         :concerns="currentConcerns"
+         :cause="currentCause"
+         name="Ya Boi"
+         />
+    </div>
 
   </section>
 </template>
