@@ -37,10 +37,7 @@ def get_mp_for_area(area: str):
     return {"mp": "Beary Bearington"}
 
 
-@app.post("/api/message-gen")
-def generate_letter(data: LetterGenRequest) -> dict:
-    final_prompt = scribe.get_prompt(data.cause, data.concerns)
-    recipients_string = ", ".join([x['name'] for x in scribe.get_recipients(data.cause)])
+def _get_email(recipients_string: str, final_prompt: str) -> str:
     response = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
@@ -51,12 +48,26 @@ def generate_letter(data: LetterGenRequest) -> dict:
             {"role": "system", "content": final_prompt},
             {
                 "role": "user",
-                "content": "Write only the email body regarding your concerns. Don't sign off with yours sincerely or anything similar. Write just the body.",
+                "content": "Write the only subject above 3 dashes (---), then write only the email body regarding your concerns. Don't sign off with yours sincerely or anything similar. Write just the body and subject seperated by dashes. Do not write Subject when stating the subject. If you do not follow the subject with 3 dashes and then the body format, I will be upset.",
             },
         ],
     )
+    return response.choices[0].message.content
+
+
+
+@app.post("/api/message-gen")
+def generate_letter(data: LetterGenRequest) -> dict:
+    final_prompt = scribe.get_prompt(data.cause, data.concerns)
+    recipients_string = ", ".join([x['name'] for x in scribe.get_recipients(data.cause)])
+    msg = _get_email(recipients_string, final_prompt)
+    print(msg)
+    subject, email = msg.split('---')
+    subject = subject.replace('Subject: ', '')
+
     return {
-        "msg": response.choices[0].message.content,
+        "msg": email.strip(),
+        'subject': subject.strip(),
         "recipients": scribe.get_recipients(data.cause),
     }
 

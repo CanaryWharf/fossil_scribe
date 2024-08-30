@@ -14,13 +14,18 @@ axios.get('/api/causes').then((res) => {
 </script>
 
 <style scoped>
+.cause-card-container {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+}
 </style>
 
 <template>
-  <div v-if="!ready">
+  <div v-if="!ready" aria-busy="true">
     Loading...
   </div>
-  <div v-else>
+  <div class="cause-card-container" v-else>
     <Cause
       class="card cause-card clickable"
       @click="$emit('cause', cause.key)"

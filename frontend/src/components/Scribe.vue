@@ -3,8 +3,9 @@ import { ref } from 'vue';
 import CauseCard from './CauseCard.vue';
 import ConcernCard from './ConcernCard.vue';
 import EmailCard from './EmailCard.vue';
+import Stepper from './stepper.vue';
 
-const allPages = ref(['Causes', 'Concerns', 'Send email'])
+const allPages = ref(['Causes', 'Concerns', 'Finalise'])
 
 const currentPage = ref(0);
 
@@ -29,7 +30,6 @@ function nextPage() {
 }
 
 function updatecurrentCause(newCause) {
-  console.log("Updating cause")
   currentCause.value = newCause;
   nextPage();
 }
@@ -41,16 +41,24 @@ function updateConcerns(newConcerns) {
 
 </script>
 
+<style scoped>
+.title {
+  text-align: center;
+}
+</style>
+
 <template>
-  <section class="section">
-    <div class="container has-text-centered">
-      <h1 class="title">
-        Fossil Scribe
-      </h1>
+  <header class="container">
+    <h1 class="title">
+      Action Scribe
+    </h1>
+  </header>
+  <body class="container">
+    <Stepper :stages="allPages" :current-stage="currentPage"></Stepper>
+    <div class="controls">
+      <button class="outline" @click="reset">Reset</button>
     </div>
-  </section>
-  <section class="section">
-    <button class="button" @click="reset">Reset</button>
+    <hr>
     <div v-if="currentPage === 0">
       <CauseCard @cause="updatecurrentCause" />
     </div>
@@ -61,9 +69,7 @@ function updateConcerns(newConcerns) {
       <EmailCard 
          :concerns="currentConcerns"
          :cause="currentCause"
-         name="Ya Boi"
          />
     </div>
-
-  </section>
+  </body>
 </template>

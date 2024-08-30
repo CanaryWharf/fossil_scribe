@@ -1,35 +1,45 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import axios from 'axios';
 import { marked } from 'marked';
-import { computed } from 'vue';
 
 const ready = ref(false);
 
 const currentMessage = ref('')
+const subject = ref('');
 const recipients = ref([]);
+const name = ref('');
 
 const props = defineProps({
   concerns: Array,
   cause: String,
-  name:  String,
 })
 
+const signOffs = [
+  'Kind Regards',
+  'Sincerely',
+];
+
 function getFullMessage(msg) {
-  return `${msg}\n\nKind Regards\n${props.name}`;
+  const sign = signOffs[Math.floor(Math.random() * signOffs.length)]
+  return `${msg}\n\n${sign}`;
 }
 
 function startEmail() {
-  const { concerns, cause, name } = props;
+  const { concerns, cause } = props;
   axios.post('/api/message-gen', {
     concerns,
     cause,
   }).then((res) => {
     currentMessage.value = getFullMessage(res.data.msg);
+    subject.value = res.data.subject;
     recipients.value = res.data.recipients;
     ready.value = true;
   });
 }
+const finalEmail = computed(() => {
+  return `${currentMessage.value}\n${name.value}`
+});
 startEmail();
 
 const mailToLink = computed(() => {
@@ -38,9 +48,9 @@ const mailToLink = computed(() => {
   }
   const toList = recipients.value.map(x => `${x.name} <${x.email}>`);
   const to = encodeURIComponent(toList.join(';'))
-  const subject = encodeURIComponent('Some subject')
-  const body = encodeURIComponent(currentMessage.value)
-  return `mailto:${to}?subject=${subject}&body=${body}`
+  const subjectEncoded = encodeURIComponent(subject.value)
+  const body = encodeURIComponent(finalEmail.value)
+  return `mailto:${to}?subject=${subjectEncoded}&body=${body}`
 
 });
 </script>
@@ -49,21 +59,26 @@ const mailToLink = computed(() => {
 .message-body {
   white-space: pre-wrap;
 }
+footer form {
+  display: flex;
+  flex-direction: column;
+}
 </style>
 
 <template>
-  <div v-if="!ready">
+  <div aria-busy="true" v-if="!ready">
     Loading...
   </div>
-  <div v-else>
-    <div class="message">
-      <div class="message-header">
-        <p>Email</p>
-      </div>
-      <div class="message-body" v-html="currentMessage">
-      </div>
-    </div>
-    <!-- <button class="button" @click="startEmail">Send Mail</button> -->
-    <a class="button" :href="mailToLink">Send Mail</a>
-  </div>
+  <article v-else>
+    <header>
+      <p>{{ subject }}</p>
+    </header>
+    <div class="message-body" v-html="currentMessage"></div>
+    <footer>
+      <form @submit.prevent>
+        <input type="text" name="name" placeholder="Name" v-model="name">
+        <a role="button" :href="mailToLink">Open in Mail</a>
+      </form>
+    </footer>
+  </article>
 </template>

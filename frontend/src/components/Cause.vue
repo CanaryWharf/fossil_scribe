@@ -19,16 +19,26 @@ function getImageUrl(filename) {
 
 </script>
 
+<style scoped>
+.cause-body {
+  display: flex;
+}
+.cause-body img {
+  max-width: 200px;
+  max-height: 200px;
+  border-radius: 20px;
+  margin-right: 10px;
+}
+.cause-card {
+}
+</style>
+
 <template>
-  <div class="card clickable">
-    <header class="card-header">
-        <p class="card-header-title">{{ name }}</p>
-      </header>
-      <div class="card-image">
-        <figure class="image is-4by3">
-          <img :src="getImageUrl(causeKey)">
-        </figure>
-      </div>
+  <article class="cause-card clickable">
+    <header>{{ name }}</header>
+    <div class="cause-body">
+      <img :src="getImageUrl(causeKey)">
       <div class="card-content">{{ description }}</div>
-  </div>
+    </div>
+  </article>
 </template>

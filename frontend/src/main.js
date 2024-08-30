@@ -1,6 +1,8 @@
 import { createApp } from 'vue'
-import './style.css'
+import './style.css';
+import './sass.scss';
 import App from './App.vue'
-import '../node_modules/bulma/css/bulma.min.css'
 
-createApp(App).mount('#app')
+const app = createApp(App)
+
+app.mount('#app')

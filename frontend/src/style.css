@@ -1,3 +1,7 @@
 .clickable {
   cursor: pointer;
 }
+
+body {
+  transition: all 0.5s;
+}
