@@ -57,6 +57,7 @@ function updatePostcode(postcode) {
 
 <style scoped>
 .title {
+  margin-top: 0.5rem;
 }
 .controls button {
   margin-right: 1rem;
