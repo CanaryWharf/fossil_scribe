@@ -1,13 +1,19 @@
 key: santa_toys
 name: "North Pole toy production Eco-cide"
 description: "Production and distribution of toys is a huge contributor to the climate catastrophe. Claus and his factory must be held accountable for his part in the on-going eco-cide of our planet."
-recipients:
-  - name: Santa Clause
-    email: jkroota+clause@gmail.com
-    constituency:
-      name: North Pole
-    party:
-      name: Christmas Party
+recipients_lookup:
+  type: mp_search
+  text: 'To your MP'
+  query:
+    post_code:
+      type: string
+# recipients:
+#   - name: Santa Clause
+#     email: jkroota+clause@gmail.com
+#     constituency:
+#       name: North Pole
+#     party:
+#       name: Christmas Party
 concerns:
   - key: coal_mine
     name: "Yuletide Coal Mine"
