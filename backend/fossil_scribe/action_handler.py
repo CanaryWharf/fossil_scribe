@@ -1,6 +1,7 @@
 import os
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 import yaml
+from fossil_scribe.gov import get_mp_from_post_code
 
 BASE_PROMPT = '''
 '''
@@ -23,7 +24,12 @@ class ActionHandler:
     def __init__(self):
         self.actions = self.get_all_actions()
 
-    def get_recipients(self, cause: str) -> List[Dict[str, str]]:
+    def get_recipients(self, cause: str, post_code: Optional[str] = None) -> List[Dict[str, str]]:
+        if 'recipients_lookup' in self.actions[cause]:
+            lookup = self.actions[cause]['recipients_lookup']
+            if lookup['type'] == 'mp_search':
+                assert isinstance(post_code, str)
+                return [get_mp_from_post_code(post_code)]
         return self.actions[cause]['recipients']
 
     def get_concerns(self, cause: str) -> List[Dict[str, str]]:

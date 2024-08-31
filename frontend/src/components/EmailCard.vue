@@ -13,6 +13,7 @@ const name = ref('');
 const props = defineProps({
   concerns: Array,
   cause: String,
+  postcode: String,
 })
 
 const signOffs = [
@@ -26,10 +27,11 @@ function getFullMessage(msg) {
 }
 
 function startEmail() {
-  const { concerns, cause } = props;
+  const { concerns, cause, postcode } = props;
   axios.post('/api/message-gen', {
     concerns,
     cause,
+    postcode,
   }).then((res) => {
     currentMessage.value = getFullMessage(res.data.msg);
     subject.value = res.data.subject;
@@ -46,7 +48,7 @@ const mailToLink = computed(() => {
   if (!ready.value) {
     return undefined;
   }
-  const toList = recipients.value.map(x => `${x.name} <${x.email}>`);
+  const toList = recipients.value.map(x => `${x.email}`);
   const to = encodeURIComponent(toList.join(';'))
   const subjectEncoded = encodeURIComponent(subject.value)
   const body = encodeURIComponent(finalEmail.value)
@@ -77,7 +79,7 @@ footer form {
     <footer>
       <form @submit.prevent>
         <input type="text" name="name" placeholder="Name" v-model="name">
-        <a role="button" :href="mailToLink">Open in Mail</a>
+        <a role="button" :href="mailToLink" data-tooltip="You will have a change to make changes in your mail app">Open in Mail</a>
       </form>
     </footer>
   </article>

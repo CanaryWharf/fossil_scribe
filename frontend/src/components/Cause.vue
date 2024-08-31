@@ -26,6 +26,8 @@ function getImageUrl(filename) {
 .cause-body img {
   max-width: 200px;
   max-height: 200px;
+  width: 7rem;
+  height: 7rem;
   border-radius: 20px;
   margin-right: 10px;
 }

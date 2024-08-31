@@ -1,0 +1,113 @@
+<script setup>
+import { ref, computed, toRaw } from 'vue';
+import axios from 'axios';
+
+const props = defineProps({
+  cause: Object,
+});
+const reps = ref([]);
+const loading = ref(false);
+const postcode = ref('');
+
+
+const postcodeRegex = /([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})/
+
+const validPostcode = computed(() => {
+  const regex = new RegExp(postcodeRegex);
+  return regex.test(postcode.value);
+});
+
+const disableSearch = computed(() => {
+  return loading.value || !validPostcode.value;
+});
+
+const lookupRecipients = computed(() => {
+  return Boolean(props.cause.recipients_lookup)
+});
+
+function getPartyStyle(partyProxy) {
+  const party = toRaw(partyProxy);
+  if (!party) {
+    return {}
+  }
+  return {
+    'background-color': '#' + party.backgroundColour,
+    color: '#' + party.foregroundColour,
+  }
+}
+
+const getRepresentative = () => {
+  axios.get(`/api/causes/${props.cause.key}/recipients?post_code=${postcode.value}`).then((res) => {
+    reps.value = res.data.recipients;
+  });
+};
+
+const recipientsFound = ref(false);
+
+if (!lookupRecipients.value) {
+  reps.value = props.cause.recipients;
+};
+
+const disableNext = computed(() => {
+  return !reps.value.length;
+});
+
+</script>
+
+<style scoped>
+.rep-details {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.rep-right {
+  display: flex;
+  flex-direction: column;
+  font-style: italic;
+}
+.rep-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.rep-party {
+  text-align: right;
+  padding-right: 0.5rem;
+}
+
+.rep-details img {
+  max-width: 10rem;
+}
+.rep-name {
+  font-size: xx-large;
+}
+.rep-constituency {
+  font-style: italic;
+}
+</style>
+
+<template>
+  <article>
+    <template  v-if="lookupRecipients">
+    <form @submit.prevent>
+      <input v-model="postcode" placeholder="Post code">
+      <button :disabled="disableSearch"@click="getRepresentative">Search</button>
+    </form>
+    <hr>
+    </template>
+    <div class="rep-details" v-for="rep in reps">
+      <div class="rep-left">
+        <span class="rep-name">{{rep.name}}</span>
+        <span class="rep-constituency">{{ rep.constituency?.name }}</span>
+      </div>
+      <div class="rep-right">
+        <img :src="rep.avatar">
+        <span :style="getPartyStyle(rep.party)" class="rep-party">{{ rep.party?.name }}</span>
+      </div>
+    </div>
+    <footer>
+      <button :disabled="disableNext" @click="$emit('chosen', postcode)">Next</button>
+    </footer>
+  </article>
+</template>

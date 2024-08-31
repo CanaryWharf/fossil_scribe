@@ -1,4 +1,4 @@
-from typing import Literal, Dict
+from typing import Literal, Dict, Optional
 import os
 import yaml
 from fastapi import FastAPI
@@ -16,7 +16,14 @@ scribe = ActionHandler()
 @app.get("/api/causes")
 def get_causes():
     refined_actions = [
-        {"key": x["key"], "name": x["name"], "description": x.get("description")} for x in scribe.actions.values()
+        {
+            "key": x["key"],
+            "name": x["name"],
+            "description": x.get("description"),
+            "recipients_lookup": x.get("recipients_lookup"),
+            "recipients": x.get("recipients"),
+        }
+        for x in scribe.actions.values()
     ]
     return {
         "causes": refined_actions,
@@ -32,9 +39,9 @@ def get_concerns_for_cause(cause: str):
     }
 
 
-@app.get("/api/areas/<string:area>/mp")
-def get_mp_for_area(area: str):
-    return {"mp": "Beary Bearington"}
+@app.get("/api/causes/{cause}/recipients")
+def get_recipients_for_cause(cause: str, post_code: Optional[str] = None):
+    return {"recipients": scribe.get_recipients(cause, post_code=post_code)}
 
 
 def _get_email(recipients_string: str, final_prompt: str) -> str:
@@ -55,20 +62,19 @@ def _get_email(recipients_string: str, final_prompt: str) -> str:
     return response.choices[0].message.content
 
 
-
 @app.post("/api/message-gen")
 def generate_letter(data: LetterGenRequest) -> dict:
     final_prompt = scribe.get_prompt(data.cause, data.concerns)
-    recipients_string = ", ".join([x['name'] for x in scribe.get_recipients(data.cause)])
+    recipients_string = ", ".join([x["name"] for x in scribe.get_recipients(data.cause, post_code=data.postcode)])
     msg = _get_email(recipients_string, final_prompt)
     print(msg)
-    subject, email = msg.split('---')
-    subject = subject.replace('Subject: ', '')
+    subject, email = msg.split("---")
+    subject = subject.replace("Subject: ", "")
 
     return {
         "msg": email.strip(),
-        'subject': subject.strip(),
-        "recipients": scribe.get_recipients(data.cause),
+        "subject": subject.strip(),
+        "recipients": scribe.get_recipients(data.cause, data.postcode),
     }
 
 

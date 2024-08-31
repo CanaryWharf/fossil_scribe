@@ -28,7 +28,7 @@ axios.get('/api/causes').then((res) => {
   <div class="cause-card-container" v-else>
     <Cause
       class="card cause-card clickable"
-      @click="$emit('cause', cause.key)"
+      @click="$emit('cause', cause)"
       :name="cause.name"
       :cause-key="cause.key"
       :description="cause.description"

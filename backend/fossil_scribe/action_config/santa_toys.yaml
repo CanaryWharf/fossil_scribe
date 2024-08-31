@@ -4,6 +4,10 @@ description: "Production and distribution of toys is a huge contributor to the c
 recipients:
   - name: Santa Clause
     email: jkroota+clause@gmail.com
+    constituency:
+      name: North Pole
+    party:
+      name: Christmas Party
 concerns:
   - key: coal_mine
     name: "Yuletide Coal Mine"
