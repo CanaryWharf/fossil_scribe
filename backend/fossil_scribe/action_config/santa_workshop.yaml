@@ -12,17 +12,17 @@ concerns:
     name: "Lack of Holidays"
     description: "Employees only get 1 day off a year"
     prompt: |
-      Elves in Santa's workshop are denied any form of paid leave, whether for vacations, sickness, or personal holidays. With only Christmas Day off, these workers face the relentless pressure of a never-ending work cycle. The lack of paid leave contributes to burnout and diminishes the quality of life for the elves, who have no opportunity to rest or attend to personal matters without sacrificing income. This situation is a clear violation of fair labor practices, where workers should be entitled to paid time off to recharge and maintain their well-being.
+      Elves in Santa's workshop are denied any form of paid leave, whether for vacations, sickness, or personal holidays. With only Christmas Day off, these workers face the relentless pressure of a never-ending work cycle. The lack of paid leave contributes to burnout and diminishes the quality of life for the elves, who have no opportunity to rest or attend to personal matters without sacrificing income. This situation is a clear violation of fair labour practices, where workers should be entitled to paid time off to recharge and maintain their well-being.
   - key: min_wage
     name: "No minimum wage"
     description: "North pole does not have any minimum wage laws"
     prompt: |
-      It's unacceptable that Santa's elves are paid nothing for their year-round labor, with no minimum wage laws at the North Pole to protect them. These skilled workers deserve fair compensation for their efforts, but instead, they're exploited under the guise of holiday spirit. Without proper wages, the elves face financial insecurity, making the festive magic of Christmas come at a dire personal cost.
+      It's unacceptable that Santa's elves are paid nothing for their year-round labour, with no minimum wage laws at the North Pole to protect them. These skilled workers deserve fair compensation for their efforts, but instead, they're exploited under the guise of holiday spirit. Without proper wages, the elves face financial insecurity, making the festive magic of Christmas come at a dire personal cost.
   - key: unsafe_working_conditions
     name: "Unsafe Working Conditions"
     description: "Workshop has a lot of dangerous machinery and tools, and does not follow any regulations"
     prompt: |
-      The working conditions in Santa's workshop are a significant cause for concern. Elves are exposed to dangerous machinery, sharp tools, and the relentless pace of production, especially as Christmas nears. Without proper safety protocols, protective gear, or adequate training, the risk of injury is alarmingly high. The absence of workplace safety standards not only endangers the elves' well-being but also highlights a serious neglect of basic labor rights. Ensuring a safe work environment should be a top priority, yet it seems entirely overlooked in the rush to meet holiday deadlines.
+      The working conditions in Santa's workshop are a significant cause for concern. Elves are exposed to dangerous machinery, sharp tools, and the relentless pace of production, especially as Christmas nears. Without proper safety protocols, protective gear, or adequate training, the risk of injury is alarmingly high. The absence of workplace safety standards not only endangers the elves' well-being but also highlights a serious neglect of basic labour rights. Ensuring a safe work environment should be a top priority, yet it seems entirely overlooked in the rush to meet holiday deadlines.
 
   - key: no_union
     name: "No Unions"
@@ -33,7 +33,7 @@ concerns:
     name: "Usage of child labour"
     description: "Elves begin working at Santa's workshop at 8 years old"
     prompt: |
-      Serious concerns arise around child labor in Santa's workshop, where elves reportedly begin building toys as young as 8 years old. This practice not only violates basic child labor laws but also deprives these young elves of a proper education. Instead of attending school and learning essential skills for their future, they are thrust into a demanding work environment with long hours and no formal training. Education is a fundamental right, and denying these young elves the opportunity to learn and grow in a safe environment raises significant ethical and legal questions. Ensuring that all workers are of appropriate age and have
+      Serious concerns arise around child labour in Santa's workshop, where elves reportedly begin building toys as young as 8 years old. This practice not only violates basic child labour laws but also deprives these young elves of a proper education. Instead of attending school and learning essential skills for their future, they are thrust into a demanding work environment with long hours and no formal training. Education is a fundamental right, and denying these young elves the opportunity to learn and grow in a safe environment raises significant ethical and legal questions. Ensuring that all workers are of appropriate age and have
   - key: no_dental
     name: "No dental Insurance"
     description: "Elves get no dental coverage, despite majority of their diet consisting of candy"
