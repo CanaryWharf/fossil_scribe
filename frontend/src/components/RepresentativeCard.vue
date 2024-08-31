@@ -37,8 +37,11 @@ function getPartyStyle(partyProxy) {
 }
 
 const getRepresentative = () => {
+  loading.value = true;
   axios.get(`/api/causes/${props.cause.key}/recipients?post_code=${postcode.value}`).then((res) => {
     reps.value = res.data.recipients;
+  }).then(() => {
+    loading.value = false;
   });
 };
 
@@ -96,7 +99,7 @@ const disableNext = computed(() => {
     </form>
     <hr>
     </template>
-    <div class="rep-details" v-for="rep in reps">
+    <div class="rep-details" :aria-busy="loading" v-for="rep in reps">
       <div class="rep-left">
         <span class="rep-name">{{rep.name}}</span>
         <span class="rep-constituency">{{ rep.constituency?.name }}</span>

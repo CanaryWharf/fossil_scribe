@@ -4,6 +4,14 @@ const props = defineProps({
   currentStage: Number,
 });
 
+const emit = defineEmits(['change']);
+
+function updatePage(index) {
+  if (index < props.currentStage) {
+    emit('change', index);
+  }
+};
+
 </script>
 
 <style scoped>
@@ -13,13 +21,17 @@ const props = defineProps({
   align-items: center;
 }
 .step-index {
-  border: 1px solid var(--pico-primary);
+  border: 1px solid var(--pico-contrast-focus);
   border-radius: 50%;
   width: 25px;
   height: 25px;
   display: inline-flex;
   justify-content: center;
   align-items: center;
+}
+
+.step-index.current {
+  border: 1px solid var(--pico-primary);
 }
 
 ul {
@@ -32,8 +44,8 @@ ul {
 
 <template>
   <ul>
-    <li class="step" v-for="stage, index in stages">
-      <span class="step-index">{{index + 1}}</span><span class="step-stage">{{stage}}</span>
+    <li @click="updatePage(index)" class="step" :class="{ clickable : index < currentStage }" v-for="stage, index in stages">
+      <span class="step-index" :class="{ current: currentStage === index }">{{index + 1}}</span><span class="step-stage">{{stage}}</span>
     </li>
   </ul>
   <progress :value="currentStage" :max="stages.length - 1"></progress>

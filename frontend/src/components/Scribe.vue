@@ -78,7 +78,7 @@ header {
     <h2>Write to your representatives the easy way</h2>
   </header>
   <body class="container">
-    <Stepper :stages="allPages" :current-stage="currentPage"></Stepper>
+    <Stepper :stages="allPages" @change="updatePage" :current-stage="currentPage"></Stepper>
     <div class="controls">
       <button class="outline" @click="reset">Reset</button>
       <span class="instructions">Step {{ currentPage + 1 }}: {{instructions[currentPage]}}</span>

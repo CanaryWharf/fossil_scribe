@@ -55,6 +55,15 @@ const mailToLink = computed(() => {
   return `mailto:${to}?subject=${subjectEncoded}&body=${body}`
 
 });
+
+function copyToClipboard() {
+  navigator.clipboard.writeText(finalEmail.value).then(() => {
+    console.log('Content copied to clipboard');
+  },() => {
+    console.error('Failed to copy');
+  });
+}
+
 </script>
 
 <style scoped>
@@ -64,6 +73,13 @@ const mailToLink = computed(() => {
 footer form {
   display: flex;
   flex-direction: column;
+}
+.email-controls {
+  display: flex;
+  gap: 10px;
+}
+.email-controls button, .email-controls a{
+  width: 100%;
 }
 </style>
 
@@ -79,7 +95,10 @@ footer form {
     <footer>
       <form @submit.prevent>
         <input type="text" name="name" placeholder="Name" v-model="name">
-        <a role="button" :href="mailToLink" data-tooltip="You will have a change to make changes in your mail app">Open in Mail</a>
+        <div class="email-controls">
+          <button @click="copyToClipboard">Copy</button>
+          <a role="button" :href="mailToLink" data-tooltip="You will have a chance to make changes in your mail app">Open in Mail</a>
+        </div>
       </form>
     </footer>
   </article>
