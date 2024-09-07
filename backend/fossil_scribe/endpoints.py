@@ -67,7 +67,6 @@ def generate_letter(data: LetterGenRequest) -> dict:
     final_prompt = scribe.get_prompt(data.cause, data.concerns)
     recipients_string = ", ".join([x["name"] for x in scribe.get_recipients(data.cause, post_code=data.postcode)])
     msg = _get_email(recipients_string, final_prompt)
-    print(msg)
     subject, email = msg.split("---")
     subject = subject.replace("Subject: ", "")
 
