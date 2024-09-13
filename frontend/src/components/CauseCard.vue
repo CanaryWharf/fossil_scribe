@@ -1,13 +1,25 @@
 <script setup>
 import { ref } from 'vue';
+import { useRoute } from 'vue-router';
 import axios from 'axios';
 import Cause from './Cause.vue';
 
 const allCauses = ref([])
 const ready = ref(false);
+const route = useRoute();
+const emit = defineEmits(['cause']);
+
+function handleCauseInQuery() {
+  const causeKey = route.query.cause;
+  const cause = allCauses.value.find(x => x.key === causeKey);
+  if (cause) {
+    emit('cause', cause);
+  }
+};
 
 axios.get('/api/causes').then((res) => {
   allCauses.value = res.data.causes;
+  handleCauseInQuery();
   ready.value = true;
 });
 

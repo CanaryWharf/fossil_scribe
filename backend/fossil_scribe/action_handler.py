@@ -1,5 +1,6 @@
 import os
 from typing import List, Dict, Any, Optional
+import random
 import yaml
 from fossil_scribe.gov import get_mp_from_post_code
 
@@ -33,7 +34,15 @@ class ActionHandler:
         return self.actions[cause]['recipients']
 
     def get_concerns(self, cause: str) -> List[Dict[str, str]]:
-        return self.actions[cause].get('concerns', [])
+        concerns = self.actions[cause].get('concerns', [])
+        random.shuffle(concerns)
+        return concerns
+
+    def get_tones(self, cause: str) -> List[str]:
+        return self.actions[cause].get('tones', [])
+
+    def get_random_tone(self, cause: str) -> str:
+        return random.choice(self.get_tones(cause))
 
     def get_prompt(self, cause: str, concern_keys: List[str]) -> str:
         concerns = [x for x in self.get_concerns(cause) if x['key'] in concern_keys]

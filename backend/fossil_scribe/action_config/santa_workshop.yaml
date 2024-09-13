@@ -1,4 +1,5 @@
 key: santa_workshop
+enabled: false
 name: "Santa's Workshop Labour Rights"
 description: "Labour rights for elven workers is in a dire state. What the North Pole is doing is akin to modern slavery and has no place in modern society."
 recipients_lookup:

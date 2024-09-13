@@ -1,10 +1,15 @@
 <script setup>
 import { ref } from 'vue';
+import { useRoute } from 'vue-router';
 import axios from 'axios';
 
 const props = defineProps({
   cause: String,
 })
+
+
+const route = useRoute();
+const emit = defineEmits(['concern']);
 
 const allConcerns = ref([])
 const selectedConcerns = ref([]);
@@ -13,7 +18,16 @@ const ready = ref(false);
 axios.get(`/api/causes/${props.cause}/concerns`).then((res) => {
   allConcerns.value = res.data.concerns;
   ready.value = true;
-});
+  handleConcernInQuery();
+})
+
+function handleConcernInQuery() {
+  const concernKeys = (route.query.concerns || '').split(',');
+  const concerns = allConcerns.value.filter(x => concernKeys.indexOf(x.key) > -1).map(x => x.key);
+  if (concerns.length) {
+    emit('concern', concerns);
+  }
+};
 
 function selectConcern(concern) {
   const index = selectedConcerns.value.indexOf(concern);

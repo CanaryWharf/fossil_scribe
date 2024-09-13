@@ -1,4 +1,4 @@
-from typing import Literal, Dict, Optional
+from typing import Literal, Dict, Optional, List
 import os
 import yaml
 from fastapi import FastAPI
@@ -44,20 +44,27 @@ def get_recipients_for_cause(cause: str, post_code: Optional[str] = None):
     return {"recipients": scribe.get_recipients(cause, post_code=post_code)}
 
 
-def _get_email(recipients_string: str, final_prompt: str) -> str:
+def _get_email(recipients_string: str, final_prompt: str, tones: Optional[List[str]] = None) -> str:
+    messages = [
+        {
+            "role": "system",
+            "content": f"You are a scribe to write emails. Your recipients are {recipients_string}. Address them by their full name. Their names are literally {recipients_string}. You Here is some background about the current cause",
+        },
+        {"role": "system", "content": final_prompt},
+        {
+            "role": "user",
+            "content": "Write the only subject above 3 dashes (---), then write only the email body regarding your concerns. You do not have to use everything but make a convincing argument. Don't sign off with yours sincerely or anything similar. Write just the body and subject seperated by dashes. Do not write Subject when stating the subject. If you do not follow the subject with 3 dashes and then the body format, I will be upset.",
+        },
+    ]
+    if tones:
+        messages.append({
+            "role": "user",
+            "content": f"You may use any of the following tones to write as: {', '.join(tones)}"
+        })
+
     response = client.chat.completions.create(
         model="gpt-4o-mini",
-        messages=[
-            {
-                "role": "system",
-                "content": f"You are a scribe to write emails. Your recipients are {recipients_string}. Address them by their full name. You Here is some background about the current cause",
-            },
-            {"role": "system", "content": final_prompt},
-            {
-                "role": "user",
-                "content": "Write the only subject above 3 dashes (---), then write only the email body regarding your concerns. Don't sign off with yours sincerely or anything similar. Write just the body and subject seperated by dashes. Do not write Subject when stating the subject. If you do not follow the subject with 3 dashes and then the body format, I will be upset.",
-            },
-        ],
+        messages=messages,
     )
     return response.choices[0].message.content
 
@@ -66,9 +73,14 @@ def _get_email(recipients_string: str, final_prompt: str) -> str:
 def generate_letter(data: LetterGenRequest) -> dict:
     final_prompt = scribe.get_prompt(data.cause, data.concerns)
     recipients_string = ", ".join([x["name"] for x in scribe.get_recipients(data.cause, post_code=data.postcode)])
-    msg = _get_email(recipients_string, final_prompt)
-    subject, email = msg.split("---")
-    subject = subject.replace("Subject: ", "")
+    msg = _get_email(recipients_string, final_prompt, tones=scribe.get_tones(data.cause))
+    try:
+        subject, email = msg.split("---")
+        subject = subject.replace("Subject: ", "")
+    except ValueError:
+        msg = _get_email(recipients_string, final_prompt)
+        subject, email = msg.split("---")
+        subject = subject.replace("Subject: ", "")
 
     return {
         "msg": email.strip(),

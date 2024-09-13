@@ -12,7 +12,8 @@
     "axios": "^1.7.4",
     "marked": "^13.0.3",
     "socket.io-client": "^4.7.5",
-    "vue": "^3.4.31"
+    "vue": "^3.4.31",
+    "vue-router": "^4.4.3"
   },
   "devDependencies": {
     "@picocss/pico": "^2.0.6",

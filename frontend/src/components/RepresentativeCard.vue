@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed, toRaw } from 'vue';
+import { useRoute } from 'vue-router';
 import axios from 'axios';
 
 const props = defineProps({
@@ -8,13 +9,20 @@ const props = defineProps({
 const reps = ref([]);
 const loading = ref(false);
 const postcode = ref('');
+const route = useRoute();
+
+const emit = defineEmits(['chosen']);
 
 
 const postcodeRegex = /([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})/
 
-const validPostcode = computed(() => {
+function isValidPostCode(code) {
   const regex = new RegExp(postcodeRegex);
-  return regex.test(postcode.value);
+  return regex.test(code);
+}
+
+const validPostcode = computed(() => {
+  return isValidPostCode(postcode.value);
 });
 
 const disableSearch = computed(() => {
@@ -36,9 +44,19 @@ function getPartyStyle(partyProxy) {
   }
 }
 
+
+function handleRepInQuery() {
+  const postcodeFromRoute = route.query.postcode;
+  if (isValidPostCode(postcodeFromRoute)) {
+    getRepresentative().then(() => {
+      emit('chosen', postcodeFromRoute, reps.value[0]?.name);
+    });
+  }
+};
+
 const getRepresentative = () => {
   loading.value = true;
-  axios.get(`/api/causes/${props.cause.key}/recipients?post_code=${postcode.value}`).then((res) => {
+  return axios.get(`/api/causes/${props.cause.key}/recipients?post_code=${postcode.value}`).then((res) => {
     reps.value = res.data.recipients;
   }).then(() => {
     loading.value = false;
@@ -49,11 +67,14 @@ const recipientsFound = ref(false);
 
 if (!lookupRecipients.value) {
   reps.value = props.cause.recipients;
+  emit('chosen', undefined, props.cause.recipients[0]?.name);
 };
 
 const disableNext = computed(() => {
   return !reps.value.length;
 });
+
+// handleRepInQuery();
 
 </script>
 
@@ -110,7 +131,7 @@ const disableNext = computed(() => {
       </div>
     </div>
     <footer>
-      <button :disabled="disableNext" @click="$emit('chosen', postcode)">Next</button>
+      <button :disabled="disableNext" @click="$emit('chosen', postcode, reps[0]?.name)">Next</button>
     </footer>
   </article>
 </template>

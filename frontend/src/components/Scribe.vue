@@ -7,6 +7,7 @@ import RepCard from './RepresentativeCard.vue';
 import Stepper from './stepper.vue';
 
 const allPages = ref(['Causes', 'Representatives', 'Concerns', 'Email'])
+const stageNameOverrides = ref([]);
 
 const instructions = ref([
   'Select a cause to write about',
@@ -39,8 +40,17 @@ function nextPage() {
   }
 }
 
+function truncate(str, n=10) {
+  return (str.length > n) ? str.slice(0, n-1) + '...' : str;
+}
+
+function updateCurrentStageName(name, index) {
+  stageNameOverrides.value[index] = truncate(name);
+}
+
 function updatecurrentCause(newCause) {
   currentCause.value = newCause;
+  updateCurrentStageName(newCause.name, currentPage.value);
   nextPage();
 }
 
@@ -49,8 +59,9 @@ function updateConcerns(newConcerns) {
   nextPage();
 }
 
-function updatePostcode(postcode) {
+function updatePostcode(postcode, repName) {
   currentPostcode.value = postcode;
+  updateCurrentStageName(repName, currentPage.value);
   nextPage();
 }
 </script>
@@ -79,7 +90,7 @@ header {
     <h2>Write to your representatives the easy way</h2>
   </header>
   <body class="container">
-    <Stepper :stages="allPages" @change="updatePage" :current-stage="currentPage"></Stepper>
+    <Stepper :stages="allPages" @change="updatePage" :current-stage="currentPage" :stage-name-overrides="stageNameOverrides"></Stepper>
     <div class="controls">
       <button class="outline" @click="reset">Reset</button>
       <span class="instructions">Step {{ currentPage + 1 }}: {{instructions[currentPage]}}</span>

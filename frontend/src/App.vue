@@ -1,9 +1,8 @@
 <script setup>
-import Scribe from './components/Scribe.vue';
 </script>
 
 <template>
-  <Scribe />
+  <RouterView />
 </template>
 
 <style scoped>

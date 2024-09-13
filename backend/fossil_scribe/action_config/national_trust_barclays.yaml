@@ -1,0 +1,28 @@
+key: national_trust_barclays
+name: "I Love National Trust not Barclays"
+description: |
+  The National Trust currently banks with Barclays, the largest fossil fuel funder in Europe. We want them to stop.
+recipients:
+  - name: Secretary
+    email: thesecretary@nationaltrust.org.uk 
+tones:
+  - Person who likes to spend a lot of time in nature.
+  - Person who likes exploring our amazing landscape.
+  - Person who cares deeply about our history and wants to preserve for future generations
+  - Person who uses simple language but cares deeply
+concerns:
+  - key: trust_values
+    name: "National Trust's values are in opposition with Barclays' actions"
+    description: ""
+    prompt: |
+      The National Trust aims to protect the environment and preserve natural heritage for future generations. However, the organization has faced criticism for its ongoing relationship with Barclays. Barclays' significant financial support for carbon-intensive industries stands in stark contrast to the National Trust's sustainability mission. This apparent contradiction raises questions about the Trust's commitment to addressing the climate crisis, with some suggesting that the organization should reconsider its financial partnerships to align fully with its environmental values.
+  - key: public_perception
+    name: 'Relationship with Barclays degrades public trust'
+    description: ''
+    prompt: |
+      Public perception plays a crucial role in how organizations are viewed and supported, particularly when it comes to environmental causes. If the National Trust continues its relationship with Barclays, it risks alienating environmentally conscious supporters who expect consistency between the Trust’s values and actions. By severing ties with a major fossil fuel investor like Barclays, the Trust would likely enhance its reputation among these audiences. This move could strengthen donor confidence, attract new members, and reinforce the Trust’s credibility as a leader in sustainability. In an era where consumers increasingly choose to support organizations that reflect their own values, such alignment is more important than ever.
+  - key: gaza
+    name: 'Barclays links to arms manufacturers'
+    description: ""
+    prompt: |
+      Barclays has faced criticism for its alleged financial links to companies supplying military equipment used in conflicts, including the bombing of Gaza. This association has led to calls for boycotts by several organizations and activists who oppose the bank’s involvement in funding arms manufacturers with ties to Israeli military operations. These critics argue that Barclays' financial support indirectly contributes to human rights violations in the region. As a result, various groups, particularly those focused on human rights and ethical investment, have chosen to cut ties with the bank, urging others to follow suit in protest against its role in the arms trade and its complicity in fueling violence in Gaza.

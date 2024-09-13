@@ -4,4 +4,4 @@ from pydantic import BaseModel
 class LetterGenRequest(BaseModel):
     concerns: List[str]
     cause: str
-    postcode: Optional[str]
+    postcode: Optional[str] = None
